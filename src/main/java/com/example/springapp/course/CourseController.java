@@ -1,9 +1,7 @@
 package com.example.springapp.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,4 +17,23 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
+    @PostMapping()
+    public Course createCourse(){
+        return null;
+    }
+
+    @GetMapping("/{id}")
+    public Course getCourseById(){
+        return null;
+    }
+
+    @PutMapping("/{id}")
+    public Course updateCourseById(){
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public Course deleteCourseById(){
+        return null;
+    }
 }

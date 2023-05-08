@@ -1,3 +1,15 @@
+## Endpoints
+
+| HTTP Request Method | Endpoint      |
+|---------------------|---------------|
+| GET                 | /courses      |
+| POST                | /courses      |
+| GET                 | /courses/{id} |
+| PUT                 | /courses/{id} |
+| DELETE              | /courses/{id} |
+
+<hr>
+
 ### Run
 
 ``mvn spring-boot:run``
@@ -6,10 +18,12 @@
 
 ``curl localhost:8080``
 
-### Spring Documentation
+<hr>
+
+#### Spring Documentation
 
 https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
 
-### Baeldung Spring Security
+#### Baeldung Spring Security
 
 https://www.baeldung.com/security-spring
