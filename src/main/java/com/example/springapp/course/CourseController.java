@@ -18,8 +18,9 @@ public class CourseController {
     }
 
     @PostMapping()
-    public Course createCourse(){
-        return null;
+    public Course createCourse(@RequestBody CourseDto courseDto){
+        Course course = new Course(courseDto.getTitle(), courseDto.getAuthor(), courseDto.getCost());
+        return courseRepository.save(course);
     }
 
     @GetMapping("/{id}")

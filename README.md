@@ -1,3 +1,14 @@
+## TO DO
+
+- Create test for createCourse
+- DTOs need constructors?
+- Evaluate DTO architecture
+- Add Service Layer
+- Improve Service/Controller methods
+- Implement remaining endpoints
+
+<hr>
+
 ## Endpoints
 
 | HTTP Request Method | Endpoint      |

@@ -27,4 +27,20 @@ public class Course {
     public Course(){
 
     }
+
+    public long getId(){
+        return this.id;
+    }
+
+    public String getTitle(){
+        return this.title;
+    }
+
+    public String getAuthor(){
+        return this.author;
+    }
+
+    public float getCost(){
+        return this.cost;
+    }
 }
