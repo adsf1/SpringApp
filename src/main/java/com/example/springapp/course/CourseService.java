@@ -2,9 +2,6 @@ package com.example.springapp.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -23,8 +20,8 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public Course getCourseById(){
-        return null;
+    public Course getCourseById(long id){
+        return courseRepository.findById(id).orElse(null);
     }
 
     public Course updateCourseById(){
