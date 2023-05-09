@@ -23,4 +23,25 @@ public class CourseControllerTest {
             .statusCode(200)
             .body(equalTo("[]"));
     }
+
+    @Test
+    public void testCreateCourse(){
+        String requestBody = "{\n" +
+                "    \"title\": \"Test Title\",\n" +
+                "    \"author\": \"Test Author\",\n" +
+                "    \"cost\": 9.99\n" +
+                "}";
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(requestBody)
+        .when()
+            .post("/courses")
+        .then()
+            .statusCode(200)
+            .body("id", equalTo(1))
+            .body("title", equalTo("Test Title"))
+            .body("author", equalTo("Test Author"))
+            .body("cost", equalTo(9.99f));
+    }
 }

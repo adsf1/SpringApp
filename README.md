@@ -1,8 +1,12 @@
 ## TO DO
 
-- Create test for createCourse
+- Improve CourseControllerTest class using TDD
 - DTOs need constructors?
+  - Not necessarily
+  - Useful if you want to create them
+    without deserializing a JSON object
 - Evaluate DTO architecture
+  - Useful in REST APIs to prevent expose of domain objects
 - Add Service Layer
 - Improve Service/Controller methods
 - Implement remaining endpoints

@@ -18,14 +18,14 @@ public class Course {
     @Column(nullable = false)
     private float cost;
 
+    public Course(){
+
+    }
+
     public Course(String title, String author, float cost) {
         this.title = title;
         this.author = author;
         this.cost = cost;
-    }
-
-    public Course(){
-
     }
 
     public long getId(){
