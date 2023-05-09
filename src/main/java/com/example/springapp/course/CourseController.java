@@ -10,17 +10,16 @@ import java.util.List;
 public class CourseController {
 
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
     @GetMapping
     public List<Course> getAllCourses(){
-        return courseRepository.findAll();
+        return courseService.getAllCourses();
     }
 
     @PostMapping()
     public Course createCourse(@RequestBody CourseDto courseDto){
-        Course course = new Course(courseDto.getTitle(), courseDto.getAuthor(), courseDto.getCost());
-        return courseRepository.save(course);
+        return courseService.createCourse(courseDto);
     }
 
     @GetMapping("/{id}")
