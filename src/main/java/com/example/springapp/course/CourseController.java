@@ -1,6 +1,5 @@
 package com.example.springapp.course;
 
-import com.example.springapp.CourseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +28,7 @@ public class CourseController {
     @GetMapping("/{id}")
     public CourseDto getCourseById(@PathVariable long id){
         Course course = courseService.getCourseById(id);
-        if(course != null){
-            return new CourseDto(course);
-        } else {
-            throw new CourseNotFoundException(id);
-        }
+        return new CourseDto(course);
     }
 
     @PutMapping("/{id}")

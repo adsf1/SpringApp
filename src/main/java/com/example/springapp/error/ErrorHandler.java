@@ -1,14 +1,14 @@
-package com.example.springapp;
+package com.example.springapp.error;
 
 
+import com.example.springapp.error.exceptions.APIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class APIExceptionHandler {
+public class ErrorHandler {
 
     @ExceptionHandler(APIException.class)
     public ResponseEntity<ErrorResponse> handleAPIException(APIException ex){
