@@ -10,6 +10,17 @@
 - Improve Service/Controller methods
 - Implement remaining endpoints
 
+#### Tests
+
+- getCourseById_CourseExists_ReturnsCourse
+- getCourseById_CourseDoesNotExist_ThrowsException
+- createCourse_ValidInput_CreatesNewCourse
+- createCourse_InvalidInput_ThrowsException
+- updateCourseById_CourseExists_UpdatesCourse
+- updateCourseById_CourseDoesNotExist_ThrowsException
+- deleteCourseById_CourseExists_DeletesCourse
+- deleteCourseById_CourseDoesNotExist_ThrowsException
+
 <hr>
 
 ## Endpoints

@@ -1,6 +1,12 @@
 package com.example.springapp;
 
+import com.example.springapp.course.Course;
+import com.example.springapp.course.CourseDto;
+import com.example.springapp.course.CourseRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -13,8 +19,26 @@ public class CourseControllerTest {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
+    private static Course course;
+
+    private static CourseDto courseDto;
+
+    @BeforeAll
+    public static void setUp() {
+        course = new Course("Test Course", "Test Author", 9.99);
+        courseDto = new CourseDto(course);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        courseRepository.deleteAll();
+    }
+
     @Test
-    public void testGetAllCourses(){
+    public void getAllCourses_EmptyDatabase_EmptyResponse(){
         given()
             .port(port)
         .when()
@@ -22,6 +46,23 @@ public class CourseControllerTest {
         .then()
             .statusCode(200)
             .body(equalTo("[]"));
+    }
+
+    @Test
+    public void getAllCourses_DatabaseWithOneRecord_ReturnsOneRecord(){
+        Course savedCourse = courseRepository.save(course);
+
+        given()
+            .port(port)
+        .when()
+            .get("/courses")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(1))
+            .body("[0].id", equalTo(savedCourse.getId()))
+            .body("[0].title", equalTo(savedCourse.getTitle()))
+            .body("[0].author", equalTo(savedCourse.getAuthor()))
+            .body("[0].cost", equalTo(savedCourse.getCost()));
     }
 
     @Test

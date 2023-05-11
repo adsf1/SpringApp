@@ -16,13 +16,13 @@ public class Course {
     private String author;
 
     @Column(nullable = false)
-    private float cost;
+    private double cost;
 
     public Course(){
 
     }
 
-    public Course(String title, String author, float cost) {
+    public Course(String title, String author, double cost) {
         this.title = title;
         this.author = author;
         this.cost = cost;
@@ -40,7 +40,7 @@ public class Course {
         return this.author;
     }
 
-    public float getCost(){
+    public double getCost(){
         return this.cost;
     }
 }
