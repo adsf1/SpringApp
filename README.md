@@ -12,8 +12,6 @@
 
 #### Tests
 
-- getCourseById_CourseExists_ReturnsCourse
-- getCourseById_CourseDoesNotExist_ThrowsException
 - createCourse_ValidInput_CreatesNewCourse
 - createCourse_InvalidInput_ThrowsException
 - updateCourseById_CourseExists_UpdatesCourse

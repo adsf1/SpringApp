@@ -7,7 +7,7 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
     @Column(nullable = false, unique = true)
     private String title;
@@ -28,7 +28,7 @@ public class Course {
         this.cost = cost;
     }
 
-    public long getId(){
+    public int getId(){
         return this.id;
     }
 

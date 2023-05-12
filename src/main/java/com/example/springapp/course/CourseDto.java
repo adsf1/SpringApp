@@ -2,7 +2,7 @@ package com.example.springapp.course;
 
 public class CourseDto {
 
-    private long id;
+    private int id;
 
     private String title;
 
@@ -21,11 +21,11 @@ public class CourseDto {
         this.cost = course.getCost();
     }
 
-    public long getId(){
+    public int getId(){
         return this.id;
     }
 
-    public void setId(long id){
+    public void setId(int id){
         this.id = id;
     }
 
