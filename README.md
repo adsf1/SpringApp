@@ -1,25 +1,18 @@
 ## TO DO
 
-- Improve CourseControllerTest class using TDD
-- Improve Service/Controller methods
-- Implement remaining endpoints
-
-#### Tests
-
-- updateCourseById_CourseExists_UpdatesCourse
-- updateCourseById_CourseDoesNotExist_ThrowsException
+- Improve methods
 
 <hr>
 
 ## Endpoints
 
-| HTTP Request Method | Endpoint      |
-|---------------------|---------------|
-| GET                 | /courses      |
-| POST                | /courses      |
-| GET                 | /courses/{id} |
-| PUT                 | /courses/{id} |
-| DELETE              | /courses/{id} |
+| HTTP Request Method | Endpoint      | Goal                   |
+|---------------------|---------------|------------------------|
+| GET                 | /courses      | Get all courses        |
+| POST                | /courses      | Create course          |
+| GET                 | /courses/{id} | Get specific course    |
+| PUT                 | /courses/{id} | Update specific course |
+| DELETE              | /courses/{id} | Delete specific course |
 
 <hr>
 

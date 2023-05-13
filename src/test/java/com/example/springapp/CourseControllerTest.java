@@ -26,6 +26,20 @@ public class CourseControllerTest {
 
     private static CourseDto courseDto;
 
+    private final String requestBody = """
+                {
+                    "title": "Test Course",
+                    "author": "Test Author",
+                    "cost": 9.99
+                }""";
+
+    private final String updateRequestBody = """
+                {
+                    "title": "Test Course 2",
+                    "author": "Test Author",
+                    "cost": 10.01
+                }""";
+
     @BeforeAll
     public static void setUp() {
         course = new Course("Test Course", "Test Author", 9.99);
@@ -66,14 +80,7 @@ public class CourseControllerTest {
     }
 
     @Test
-    public void createCourse_ValidInput_CreatesNewCourse(){
-        String requestBody = """
-                {
-                    "title": "Test Course",
-                    "author": "Test Author",
-                    "cost": 9.99
-                }""";
-
+    public void createCourse_ValidInputAndCourseDoesNotExist_CreatesNewCourse(){
         given()
             .port(port)
             .contentType("application/json")
@@ -109,21 +116,14 @@ public class CourseControllerTest {
     }
 
     @Test
-    public void createCourse_ValidInput_ReturnsRepositoryError(){
+    public void createCourse_ValidInputAndCourseExists_ReturnsRepositoryError(){
         courseRepository.save(course);
-
-        String requestBody = """
-                {
-                    "title": "Test Course",
-                    "author": "Test Author",
-                    "cost": 9.99
-                }""";
 
         given()
             .port(port)
             .contentType("application/json")
-        .body(requestBody)
-            .when()
+            .body(requestBody)
+        .when()
             .post("/courses")
         .then()
             .statusCode(400)
@@ -157,6 +157,38 @@ public class CourseControllerTest {
             .statusCode(404)
             .body("size()", equalTo(2))
             .body("statusCode", equalTo(404))
+            .body("message", equalTo("Course 0 not found"));
+    }
+
+    @Test
+    public void updateCourseById_CourseExists_UpdatesCourse(){
+        courseRepository.save(course);
+
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(updateRequestBody)
+        .when()
+            .put("/courses/1")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(4))
+            .body("id", equalTo(1))
+            .body("title", equalTo("Test Course 2"))
+            .body("author", equalTo("Test Author"))
+            .body("cost", equalTo(10.01f));
+    }
+
+    @Test
+    public void updateCourseById_CourseDoesNotExist_ReturnsError(){
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(updateRequestBody)
+        .when()
+            .put("/courses/0")
+        .then()
+            .statusCode(404)
             .body("message", equalTo("Course 0 not found"));
     }
 
