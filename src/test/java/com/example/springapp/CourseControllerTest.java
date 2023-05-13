@@ -3,7 +3,6 @@ package com.example.springapp;
 import com.example.springapp.course.Course;
 import com.example.springapp.course.CourseDto;
 import com.example.springapp.course.CourseRepository;
-import com.example.springapp.error.exceptions.CourseNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,8 +12,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CourseControllerTest {
@@ -65,16 +62,18 @@ public class CourseControllerTest {
             .body("[0].id", equalTo(savedCourse.getId()))
             .body("[0].title", equalTo(savedCourse.getTitle()))
             .body("[0].author", equalTo(savedCourse.getAuthor()))
-            .body("[0].cost", equalTo(savedCourse.getCost()));
+            .body("[0].cost", equalTo((float) savedCourse.getCost()));
     }
 
     @Test
-    public void testCreateCourse(){
-        String requestBody = "{\n" +
-                "    \"title\": \"Test Title\",\n" +
-                "    \"author\": \"Test Author\",\n" +
-                "    \"cost\": 9.99\n" +
-                "}";
+    public void createCourse_ValidInput_CreatesNewCourse(){
+        String requestBody = """
+                {
+                    "title": "Test Course",
+                    "author": "Test Author",
+                    "cost": 9.99
+                }""";
+
         given()
             .port(port)
             .contentType("application/json")
@@ -82,11 +81,53 @@ public class CourseControllerTest {
         .when()
             .post("/courses")
         .then()
-            .statusCode(200)
+            .statusCode(201)
+            .body("size()", equalTo(4))
             .body("id", equalTo(1))
-            .body("title", equalTo("Test Title"))
+            .body("title", equalTo("Test Course"))
             .body("author", equalTo("Test Author"))
             .body("cost", equalTo(9.99f));
+    }
+
+    @Test
+    public void createCourse_InvalidInput_ReturnsError(){
+        String requestBody = """
+                {
+                    "author": "Test Author",
+                    "cost": 9.99
+                }""";
+
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(requestBody)
+        .when()
+            .post("/courses")
+        .then()
+            .statusCode(400)
+            .body("message", equalTo("Fill out the necessary fields. Required fields: title, author, cost"));
+    }
+
+    @Test
+    public void createCourse_ValidInput_ReturnsRepositoryError(){
+        courseRepository.save(course);
+
+        String requestBody = """
+                {
+                    "title": "Test Course",
+                    "author": "Test Author",
+                    "cost": 9.99
+                }""";
+
+        given()
+            .port(port)
+            .contentType("application/json")
+        .body(requestBody)
+            .when()
+            .post("/courses")
+        .then()
+            .statusCode(400)
+            .body("message", equalTo("Course 'Test Course' already exists"));
     }
 
     @Test
@@ -94,9 +135,9 @@ public class CourseControllerTest {
         Course savedCourse = courseRepository.save(course);
 
         given()
-        .   port(port)
+            .port(port)
         .when()
-        .   get("/courses/1")
+            .get("/courses/1")
         .then()
             .statusCode(200)
             .body("size()", equalTo(4))
