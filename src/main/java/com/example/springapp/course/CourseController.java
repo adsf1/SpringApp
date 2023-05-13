@@ -1,6 +1,8 @@
 package com.example.springapp.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,8 +12,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/courses")
 public class CourseController {
 
+    private final CourseService courseService;
+
     @Autowired
-    private CourseService courseService;
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @GetMapping
     public List<CourseDto> getAllCourses(){
@@ -20,9 +26,9 @@ public class CourseController {
     }
 
     @PostMapping()
-    public CourseDto createCourse(@RequestBody CourseDto courseDto){
+    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto){
         Course course = courseService.createCourse(courseDto);
-        return new CourseDto(course);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CourseDto(course));
     }
 
     @GetMapping("/{id}")

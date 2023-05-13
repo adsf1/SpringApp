@@ -8,7 +8,7 @@ public class CourseDto {
 
     private String author;
 
-    private double cost;
+    private Double cost;
 
     public CourseDto(){
 
@@ -45,11 +45,11 @@ public class CourseDto {
         this.author = author;
     }
 
-    public double getCost(){
+    public Double getCost(){
         return this.cost;
     }
 
-    public void setCost(float cost){
+    public void setCost(Double cost){
         this.cost = cost;
     }
 }
