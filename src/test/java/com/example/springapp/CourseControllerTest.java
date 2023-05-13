@@ -159,4 +159,29 @@ public class CourseControllerTest {
             .body("statusCode", equalTo(404))
             .body("message", equalTo("Course 0 not found"));
     }
+
+    @Test
+    public void deleteCourseById_CourseExists_DeletesCourse(){
+        courseRepository.save(course);
+
+        given()
+            .port(port)
+        .when()
+            .delete("/courses/1")
+        .then()
+            .statusCode(204);
+    }
+
+    @Test
+    public void deleteCourseById_CourseDoesNotExist_ReturnsError(){
+        courseRepository.save(course);
+
+        given()
+            .port(port)
+        .when()
+            .delete("/courses/0")
+        .then()
+            .statusCode(404)
+            .body("message", equalTo("Course 0 not found"));
+    }
 }
