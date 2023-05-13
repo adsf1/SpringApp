@@ -49,7 +49,13 @@ public class CourseService {
         return null;
     }
 
-    public Course deleteCourseById(){
-        return null;
+    public void deleteCourseById(long id) throws CourseNotFoundException {
+        Optional<Course> course = courseRepository.findById(id);
+
+        if(course.isPresent()){
+            courseRepository.deleteById(id);
+        } else {
+            throw new CourseNotFoundException(id);
+        }
     }
 }
