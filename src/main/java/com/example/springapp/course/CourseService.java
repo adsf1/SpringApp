@@ -45,8 +45,22 @@ public class CourseService {
         }
     }
 
-    public Course updateCourseById(){
-        return null;
+    public Course updateCourseById(long id, CourseDto courseDto){
+        Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
+
+        if(courseDto.getTitle() != null){
+            course.setTitle(courseDto.getTitle());
+        }
+
+        if(courseDto.getAuthor() != null){
+            course.setAuthor(courseDto.getAuthor());
+        }
+
+        if(courseDto.getCost() != null){
+            course.setCost(courseDto.getCost());
+        }
+
+        return courseRepository.save(course);
     }
 
     public void deleteCourseById(long id) throws CourseNotFoundException {
