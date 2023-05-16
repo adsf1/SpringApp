@@ -1,18 +1,28 @@
 ## TO DO
 
 - Improve methods
+- Implement Author stuff
+- Use Author info on Course obj
 
 <hr>
 
 ## Endpoints
 
-| HTTP Request Method | Endpoint      | Goal                   |
-|---------------------|---------------|------------------------|
-| GET                 | /courses      | Get all courses        |
-| POST                | /courses      | Create course          |
-| GET                 | /courses/{id} | Get specific course    |
-| PUT                 | /courses/{id} | Update specific course |
-| DELETE              | /courses/{id} | Delete specific course |
+| HTTP Request Method | Endpoint      | Goal                    |
+|---------------------|---------------|-------------------------|
+| GET                 | /courses      | Get all courses         |
+| POST                | /courses      | Create course           |
+| GET                 | /courses/{id} | Get specific course     |
+| PUT                 | /courses/{id} | Update specific course  |
+| DELETE              | /courses/{id} | Delete specific course  |
+
+| HTTP Request Method | Endpoint      | Goal                    |
+|---------------------|---------------|-------------------------|
+| GET                 | /authors      | Get all authors         |
+| POST                | /authors      | Create authors          |
+| GET                 | /authors/{id} | Get specific authors    |
+| PUT                 | /authors/{id} | Update specific authors |
+| DELETE              | /authors/{id} | Delete specific authors |
 
 <hr>
 
