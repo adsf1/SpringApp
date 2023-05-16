@@ -1,12 +1,14 @@
 package com.example.springapp.course;
 
+import com.example.springapp.author.Author;
+
 public class CourseDto {
 
     private int id;
 
     private String title;
 
-    private String author;
+    private Long authorId;
 
     private Double cost;
 
@@ -17,7 +19,7 @@ public class CourseDto {
     public CourseDto(Course course){
         this.id = course.getId();
         this.title = course.getTitle();
-        this.author = course.getAuthor();
+        this.authorId = course.getAuthorId();
         this.cost = course.getCost();
     }
 
@@ -37,12 +39,12 @@ public class CourseDto {
         this.title = title;
     }
 
-    public String getAuthor(){
-        return this.author;
+    public Long getAuthorId(){
+        return this.authorId;
     }
 
-    public void setAuthor(String author){
-        this.author = author;
+    public void setAuthorId(long authorId){
+        this.authorId = authorId;
     }
 
     public Double getCost(){

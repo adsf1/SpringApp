@@ -25,10 +25,10 @@ public class CourseService {
     }
 
     public Course createCourse(CourseDto courseDto){
-        if(courseDto.getTitle() == null || courseDto.getAuthor() == null || courseDto.getCost() == null){
+        if(courseDto.getTitle() == null || courseDto.getAuthorId() == null || courseDto.getCost() == null){
             throw new MissingInformationException("title", "author", "cost");
         }
-        Course course = new Course(courseDto.getTitle(), courseDto.getAuthor(), courseDto.getCost());
+        Course course = new Course(courseDto.getTitle(), courseDto.getAuthorId(), courseDto.getCost());
         try{
             return courseRepository.save(course);
         } catch (Exception e) {
@@ -52,8 +52,8 @@ public class CourseService {
             course.setTitle(courseDto.getTitle());
         }
 
-        if(courseDto.getAuthor() != null){
-            course.setAuthor(courseDto.getAuthor());
+        if(courseDto.getAuthorId() != null){
+            course.setAuthor(courseDto.getAuthorId());
         }
 
         if(courseDto.getCost() != null){

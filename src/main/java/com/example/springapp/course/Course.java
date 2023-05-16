@@ -1,5 +1,6 @@
 package com.example.springapp.course;
 
+import com.example.springapp.author.Author;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,8 +13,8 @@ public class Course {
     @Column(nullable = false, unique = true)
     private String title;
 
-    @Column(nullable = false)
-    private String author;
+    @ManyToOne
+    private Author author;
 
     @Column(nullable = false)
     private double cost;
@@ -22,9 +23,9 @@ public class Course {
 
     }
 
-    public Course(String title, String author, double cost) {
+    public Course(String title, long authorId, double cost) {
         this.title = title;
-        this.author = author;
+        this.author = new Author(); // TO DO
         this.cost = cost;
     }
 
@@ -40,12 +41,20 @@ public class Course {
         this.title = title;
     }
 
-    public String getAuthor(){
+    public Author getAuthor(){
         return this.author;
     }
 
-    public void setAuthor(String author){
+    public long getAuthorId(){
+        return 0; // TO DO
+    }
+
+    public void setAuthor(Author author){
         this.author = author;
+    }
+
+    public void setAuthor(long authorId){
+        this.author = new Author();
     }
 
     public double getCost(){
