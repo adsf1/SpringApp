@@ -31,7 +31,7 @@ public class CourseService {
 
     public Course createCourse(CourseDto courseDto){
         if(courseDto.getTitle() == null || courseDto.getAuthorId() == null || courseDto.getCost() == null){
-            throw new MissingInformationException("title", "author", "cost");
+            throw new MissingInformationException("title", "authorId", "cost");
         }
         Optional<Author> optionalAuthor = authorRepository.findById(courseDto.getAuthorId());
         if(optionalAuthor.isEmpty()){

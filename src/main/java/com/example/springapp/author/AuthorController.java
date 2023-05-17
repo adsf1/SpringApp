@@ -1,6 +1,9 @@
 package com.example.springapp.author;
 
+import com.example.springapp.course.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +26,9 @@ public class AuthorController {
     }
 
     @PostMapping()
-    public void createAuthor(){
-
+    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto){
+        Author author = authorService.createAuthor(authorDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthorDto(author));
     }
 
     @GetMapping("/{id}")

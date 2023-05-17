@@ -1,8 +1,10 @@
 package com.example.springapp.author;
 
 import com.example.springapp.course.Course;
+import com.example.springapp.course.CourseDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthorDto {
 
@@ -10,9 +12,9 @@ public class AuthorDto {
 
     private String name;
 
-    private int age;
+    private Integer age;
 
-    private List<Course> courses;
+    private List<CourseDto> courses;
 
     public AuthorDto(){
 
@@ -22,7 +24,7 @@ public class AuthorDto {
         this.id = author.getId();
         this.name = author.getName();
         this.age = author.getAge();
-        this.courses = author.getCourses();
+        this.courses = author.getCourses().stream().map(CourseDto::new).collect(Collectors.toList());
     }
 
     public int getId(){
@@ -41,19 +43,19 @@ public class AuthorDto {
         this.name = name;
     }
 
-    public int getAge(){
+    public Integer getAge(){
         return this.age;
     }
 
-    public void setAge(int age){
+    public void setAge(Integer age){
         this.age = age;
     }
 
-    public List<Course> getCourses(){
+    public List<CourseDto> getCourses(){
         return this.courses;
     }
 
-    public void setCourses(List<Course> courses){
+    public void setCourses(List<CourseDto> courses){
         this.courses = courses;
     }
 }
