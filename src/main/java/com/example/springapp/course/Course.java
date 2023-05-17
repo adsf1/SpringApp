@@ -14,6 +14,7 @@ public class Course {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private Author author;
 
     @Column(nullable = false)
@@ -23,9 +24,9 @@ public class Course {
 
     }
 
-    public Course(String title, long authorId, double cost) {
+    public Course(String title, Author author, double cost) {
         this.title = title;
-        this.author = new Author(); // TO DO
+        this.author = author;
         this.cost = cost;
     }
 
@@ -45,16 +46,12 @@ public class Course {
         return this.author;
     }
 
-    public long getAuthorId(){
-        return 0; // TO DO
+    public long getAuthorId() {
+        return author.getId();
     }
 
     public void setAuthor(Author author){
         this.author = author;
-    }
-
-    public void setAuthor(long authorId){
-        this.author = new Author();
     }
 
     public double getCost(){

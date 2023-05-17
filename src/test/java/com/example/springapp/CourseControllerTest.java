@@ -1,5 +1,6 @@
 package com.example.springapp;
 
+import com.example.springapp.author.Author;
 import com.example.springapp.course.Course;
 import com.example.springapp.course.CourseDto;
 import com.example.springapp.course.CourseRepository;
@@ -29,20 +30,21 @@ public class CourseControllerTest {
     private final String requestBody = """
                 {
                     "title": "Test Course",
-                    "author": "Test Author",
+                    "authorId": 1,
                     "cost": 9.99
                 }""";
 
     private final String updateRequestBody = """
                 {
                     "title": "Test Course 2",
-                    "author": "Test Author",
+                    "authorId": 2,
                     "cost": 10.01
                 }""";
 
     @BeforeAll
     public static void setUp() {
-        course = new Course("Test Course", "Test Author", 9.99);
+        Author author = new Author("Test Author", 27);
+        course = new Course("Test Course", author, 9.99);
         courseDto = new CourseDto(course);
     }
 

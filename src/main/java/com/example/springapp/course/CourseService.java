@@ -1,5 +1,8 @@
 package com.example.springapp.course;
 
+import com.example.springapp.author.Author;
+import com.example.springapp.author.AuthorRepository;
+import com.example.springapp.error.exceptions.AuthorNotFoundException;
 import com.example.springapp.error.exceptions.CourseAlreadyExistsException;
 import com.example.springapp.error.exceptions.CourseNotFoundException;
 import com.example.springapp.error.exceptions.MissingInformationException;
@@ -7,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.MissingFormatArgumentException;
 import java.util.Optional;
 
 @Service
@@ -15,9 +17,12 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
+    private final AuthorRepository authorRepository;
+
     @Autowired
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, AuthorRepository authorRepository) {
         this.courseRepository = courseRepository;
+        this.authorRepository = authorRepository;
     }
 
     public List<Course> getAllCourses(){
@@ -28,7 +33,11 @@ public class CourseService {
         if(courseDto.getTitle() == null || courseDto.getAuthorId() == null || courseDto.getCost() == null){
             throw new MissingInformationException("title", "author", "cost");
         }
-        Course course = new Course(courseDto.getTitle(), courseDto.getAuthorId(), courseDto.getCost());
+        Optional<Author> optionalAuthor = authorRepository.findById(courseDto.getAuthorId());
+        if(optionalAuthor.isEmpty()){
+            throw new AuthorNotFoundException(courseDto.getAuthorId());
+        }
+        Course course = new Course(courseDto.getTitle(), optionalAuthor.get(), courseDto.getCost());
         try{
             return courseRepository.save(course);
         } catch (Exception e) {
@@ -52,8 +61,12 @@ public class CourseService {
             course.setTitle(courseDto.getTitle());
         }
 
-        if(courseDto.getAuthorId() != null){
-            course.setAuthor(courseDto.getAuthorId());
+        if(courseDto.getAuthorId() != null && courseDto.getAuthorId() != course.getAuthorId()){
+            Optional<Author> optionalAuthor = authorRepository.findById(courseDto.getAuthorId());
+            if(optionalAuthor.isEmpty()){
+                throw new AuthorNotFoundException(courseDto.getAuthorId());
+            }
+            course.setAuthor(optionalAuthor.get());
         }
 
         if(courseDto.getCost() != null){

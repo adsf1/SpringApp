@@ -16,7 +16,6 @@ public class Author {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
     private int age;
 
     @OneToMany(mappedBy = "author")
@@ -56,7 +55,7 @@ public class Author {
         return this.courses;
     }
 
-    public void addCourses(Course course){
+    public void addCourse(Course course){
         this.courses.add(course);
         course.setAuthor(this);
     }

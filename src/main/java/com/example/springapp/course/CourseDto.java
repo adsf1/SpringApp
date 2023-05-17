@@ -1,7 +1,5 @@
 package com.example.springapp.course;
 
-import com.example.springapp.author.Author;
-
 public class CourseDto {
 
     private int id;
