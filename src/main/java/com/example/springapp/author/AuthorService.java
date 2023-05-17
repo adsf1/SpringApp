@@ -3,6 +3,8 @@ package com.example.springapp.author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorService {
 
@@ -13,8 +15,8 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public void getAllAuthors(){
-
+    public List<Author> getAllAuthors(){
+        return authorRepository.findAll();
     }
 
     public void createAuthor(){
