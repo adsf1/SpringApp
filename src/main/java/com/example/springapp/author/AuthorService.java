@@ -29,7 +29,7 @@ public class AuthorService {
         }
 
         if(authorDto.getName() == null || authorDto.getAge() == null){
-            throw new MissingInformationException("mame", "age");
+            throw new MissingInformationException("name", "age");
         }
 
         Author author = new Author(authorDto.getName(), authorDto.getAge());

@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthorControllerTest {
+public class AuthorControllerTest { // INCOMPLETE TESTS
 
     @LocalServerPort
     private int port;
@@ -24,9 +28,21 @@ public class AuthorControllerTest {
 
     private static AuthorDto authorDto;
 
+    private final String requestBody = """
+                {
+                    "name": "Test Author",
+                    "age": 1
+                }""";
+
+    private final String updateRequestBody = """
+                {
+                    "name": "Test Course 2",
+                    "age": 2
+                }""";
+
     @BeforeAll
     public static void setUp() {
-        author = new Author();
+        author = new Author("Test Author", 27);
         authorDto = new AuthorDto(author);
     }
 
@@ -37,26 +53,66 @@ public class AuthorControllerTest {
 
     @Test
     public void getAllAuthors_EmptyDatabase_EmptyResponse(){
-
+        given()
+            .port(port)
+        .when()
+            .get("/authors")
+        .then()
+            .statusCode(200)
+            .body(equalTo("[]"));
     }
 
     @Test
     public void getAllAuthors_DatabaseWithOneRecord_ReturnsOneRecord(){
+        Author savedAuthor = authorRepository.save(author);
+
+        given()
+            .port(port)
+        .when()
+            .get("/authors")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(1))
+            .body("[0].id", equalTo(savedAuthor.getId()))
+            .body("[0].name", equalTo(savedAuthor.getName()))
+            .body("[0].age", equalTo(savedAuthor.getAge()))
+            .body("[0].courses", hasSize(0));
 
     }
 
     @Test
     public void createAuthor_ValidInputAndCourseDoesNotExist_CreatesNewAuthor(){
-
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(requestBody)
+        .when()
+            .post("/authors")
+        .then()
+        .statusCode(201)
+            .body("size()", equalTo(4))
+            .body("id", equalTo(1))
+            .body("name", equalTo("Test Author"))
+            .body("age", equalTo(1))
+            .body("courses", hasSize(0));
     }
 
     @Test
     public void createAuthor_InvalidInput_ReturnsError(){
+        String requestBody = """
+                {
+                    "age": 1
+                }""";
 
-    }
-
-    @Test
-    public void createAuthor_ValidInputAndCourseExists_ReturnsRepositoryError(){
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(requestBody)
+        .when()
+            .post("/authors")
+        .then()
+            .statusCode(400)
+            .body("message", equalTo("Fill out the necessary fields. Required fields: name, age"));
 
     }
 
