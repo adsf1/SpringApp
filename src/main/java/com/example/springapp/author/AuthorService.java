@@ -36,7 +36,7 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
-    public Author getAuthorById(long id) {
+    public Author getAuthorById(long id) throws AuthorNotFoundException {
         Optional<Author> author = authorRepository.findById(id);
         if(author.isPresent()){
             return author.get();
@@ -49,7 +49,13 @@ public class AuthorService {
 
     }
 
-    public void deleteAuthorById() {
+    public void deleteAuthorById(long id) throws AuthorNotFoundException {
+        Optional<Author> author = authorRepository.findById(id);
 
+        if(author.isPresent()){
+            authorRepository.deleteById(id);
+        } else {
+            throw new AuthorNotFoundException(id);
+        }
     }
 }
