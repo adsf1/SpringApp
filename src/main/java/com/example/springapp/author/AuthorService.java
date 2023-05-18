@@ -1,5 +1,6 @@
 package com.example.springapp.author;
 
+import com.example.springapp.error.exceptions.AuthorNotFoundException;
 import com.example.springapp.error.exceptions.CourseAlreadyExistsException;
 import com.example.springapp.error.exceptions.CoursesNotAllowedOnAuthorCreationException;
 import com.example.springapp.error.exceptions.MissingInformationException;
@@ -8,6 +9,7 @@ import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorService {
@@ -34,8 +36,13 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
-    public void getAuthorById() {
-
+    public Author getAuthorById(long id) {
+        Optional<Author> author = authorRepository.findById(id);
+        if(author.isPresent()){
+            return author.get();
+        } else {
+            throw new AuthorNotFoundException(id);
+        }
     }
 
     public void updateAuthorById(){
