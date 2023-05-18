@@ -45,8 +45,22 @@ public class AuthorService {
         }
     }
 
-    public void updateAuthorById(){
+    public Author updateAuthorById(long id, AuthorDto authorDto) throws AuthorNotFoundException {
+        if(authorDto.getCourses() != null){
+            throw new CoursesNotAllowedOnAuthorCreationException();
+        }
 
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
+
+        if(authorDto.getName() != null){
+            author.setName(authorDto.getName());
+        }
+
+        if(authorDto.getAge() != null){
+            author.setAge(authorDto.getAge());
+        }
+
+        return authorRepository.save(author);
     }
 
     public void deleteAuthorById(long id) throws AuthorNotFoundException {

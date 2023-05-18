@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CoursesNotAllowedOnAuthorCreationException extends APIException {
 
     public CoursesNotAllowedOnAuthorCreationException() {
-        super(HttpStatus.BAD_REQUEST.value(), "Courses not allowed on author creation");
+        super(HttpStatus.BAD_REQUEST.value(), "Courses not allowed on author creation or modification");
     }
 }

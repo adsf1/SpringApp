@@ -38,8 +38,9 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public void updateAuthorById(){
-
+    public AuthorDto updateAuthorById(@PathVariable long id, @RequestBody AuthorDto authorDto){
+        Author author = authorService.updateAuthorById(id, authorDto);
+        return new AuthorDto(author);
     }
 
     @DeleteMapping("/{id}")
