@@ -1,6 +1,5 @@
 package com.example.springapp.author;
 
-import com.example.springapp.course.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

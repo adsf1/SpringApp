@@ -33,11 +33,15 @@ public class CourseService {
         if(courseDto.getTitle() == null || courseDto.getAuthorId() == null || courseDto.getCost() == null){
             throw new MissingInformationException("title", "authorId", "cost");
         }
+
         Optional<Author> optionalAuthor = authorRepository.findById(courseDto.getAuthorId());
+
         if(optionalAuthor.isEmpty()){
             throw new AuthorNotFoundException(courseDto.getAuthorId());
         }
+
         Course course = new Course(courseDto.getTitle(), optionalAuthor.get(), courseDto.getCost());
+
         try{
             return courseRepository.save(course);
         } catch (Exception e) {
@@ -47,6 +51,7 @@ public class CourseService {
 
     public Course getCourseById(long id) throws CourseNotFoundException {
         Optional<Course> optionalCourse = courseRepository.findById(id);
+
         if(optionalCourse.isPresent()){
             return optionalCourse.get();
         } else {
@@ -63,6 +68,7 @@ public class CourseService {
 
         if(courseDto.getAuthorId() != null && courseDto.getAuthorId() != course.getAuthorId()){
             Optional<Author> optionalAuthor = authorRepository.findById(courseDto.getAuthorId());
+
             if(optionalAuthor.isEmpty()){
                 throw new AuthorNotFoundException(courseDto.getAuthorId());
             }

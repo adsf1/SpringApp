@@ -1,6 +1,5 @@
 package com.example.springapp.author;
 
-import com.example.springapp.course.Course;
 import com.example.springapp.course.CourseDto;
 
 import java.util.List;
