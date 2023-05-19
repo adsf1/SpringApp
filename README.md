@@ -1,11 +1,3 @@
-## TO DO
-
-- Improve methods
-- Implement Author stuff
-- Use Author info on Course obj
-
-<hr>
-
 ## Endpoints
 
 | HTTP Request Method | Endpoint      | Goal                    |
