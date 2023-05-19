@@ -118,31 +118,88 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
 
     @Test
     public void getAuthorById_AuthorExists_ReturnsCourse(){
+        Author savedAuthor = authorRepository.save(author);
 
+        given()
+            .port(port)
+        .when()
+            .get("/authors/1")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(4))
+            .body("id", equalTo((savedAuthor.getId())))
+            .body("name", equalTo(savedAuthor.getName()))
+            .body("age", equalTo(savedAuthor.getAge()))
+            .body("courses", hasSize(0));
     }
 
     @Test
     public void getAuthorById_AuthorDoesNotExist_ReturnsError(){
-
+        given()
+            .port(port)
+        .when()
+            .get("/authors/0")
+        .then()
+            .statusCode(404)
+            .body("size()", equalTo(2))
+            .body("statusCode", equalTo(404))
+            .body("message", equalTo("Author 0 not found"));
     }
 
     @Test
     public void updateAuthorById_AuthorExists_UpdatesAuthor(){
+        authorRepository.save(author);
 
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(updateRequestBody)
+        .when()
+            .put("/courses/1")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(4))
+            .body("id", equalTo(1))
+            .body("name", equalTo("Test Author 2"))
+            .body("age", equalTo(2))
+            .body("courses", hasSize(0));
     }
 
     @Test
     public void updateAuthorById_AuthorDoesNotExist_ReturnsError(){
-
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body(updateRequestBody)
+        .when()
+            .put("/authors/0")
+        .then()
+            .statusCode(404)
+            .body("message", equalTo("Author 0 not found"));
     }
 
     @Test
     public void deleteAuthorById_AuthorExists_DeletesAuthor(){
+        authorRepository.save(author);
 
+        given()
+            .port(port)
+        .when()
+            .delete("/authors/1")
+        .then()
+            .statusCode(204);
     }
 
     @Test
     public void deleteAuthorById_AuthorDoesNotExist_ReturnsError(){
+        authorRepository.save(author);
 
+        given()
+            .port(port)
+        .when()
+            .delete("/authors/0")
+        .then()
+        .statusCode(404)
+            .body("message", equalTo("Author 0 not found"));
     }
 }
