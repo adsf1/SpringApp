@@ -30,3 +30,35 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Compiled output
+/fe/dist
+/fe/tmp
+/fe/out-tsc
+/fe/bazel-out
+
+# Node
+/fe/node_modules
+/fe/npm-debug.log
+/fe/yarn-error.log
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/fe/.angular/cache
+/fe/sass-cache/
+/fe/connect.lock
+/fe/coverage
+/fe/libpeerconnection.log
+/fe/testem.log
+/fe/typings
+
+# System files
+/fe/DS_Store
+/fe/Thumbs.db
