@@ -1,0 +1,23 @@
+.courses-main {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.courses-content {
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.courses-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.courses-content li {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+}

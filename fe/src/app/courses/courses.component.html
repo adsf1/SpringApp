@@ -1,0 +1,21 @@
+<main class="courses-main">
+    <div class="courses-content">
+        <h2>Courses</h2>
+        @if(error){
+            <div class="error-message">
+                Error: {{ error }}    
+            </div>
+        }
+        @else {
+            <ul>
+                @for (course of courses; track course.id) {
+                    <li>
+                        <h4>{{ course.title }}</h4>
+                        <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
+                        <p>Cost: {{ course.cost }}</p>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</main>
