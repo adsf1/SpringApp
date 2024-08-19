@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { NgFor, NgIf } from '@angular/common';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import {  RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { Course } from '../models/course.model';
 
 @Component({
   selector: 'app-courses',
@@ -13,24 +14,27 @@ import {  RouterLink } from '@angular/router';
   styleUrl: './courses.component.css'
 })
 export class CoursesComponent implements OnInit {
-  courses: any[] = [];
+  courses: Course[] = [];
   error: string | null = null;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:8080/courses')
+    this.http.get<Course[]>('http://localhost:8080/courses')
       .pipe(
         catchError(error => {
           this.error = 'Failed to get courses!';
-          console.log(error);
+          // console.log(error);
           return of([]);
         })
       )
       .subscribe(data => {
-        console.log(data);
-        this.courses = data;
-        this.error = null;
+        if (data) {
+          this.courses = data;
+          this.error = null;
+        } else {
+          this.error = 'Failed to get courses!';
+        }
       });
   }
 }
