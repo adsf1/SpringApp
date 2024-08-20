@@ -20,4 +20,15 @@
 .courses-content li {
     border-bottom: 1px solid #ccc;
     padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.data-panel {
+    
+}
+
+.delete-panel {
+
 }

@@ -10,9 +10,14 @@
             <ul>
                 @for (course of courses; track course.id) {
                     <li>
-                        <h4>{{ course.title }}</h4>
-                        <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
-                        <p>Cost: {{ course.cost }}</p>
+                        <div class="data-panel">
+                            <h4>{{ course.title }}</h4>
+                            <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
+                            <p>Cost: {{ course.cost }}</p>
+                        </div>
+                        <div class="delete-panel">
+                            <button (click)="deleteCourse(course.id)">Delete Course</button>
+                        </div>
                     </li>
                 }
             </ul>

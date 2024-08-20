@@ -24,7 +24,6 @@ export class CoursesComponent implements OnInit {
       .pipe(
         catchError(error => {
           this.error = 'Failed to get courses!';
-          // console.log(error);
           return of([]);
         })
       )
@@ -35,6 +34,20 @@ export class CoursesComponent implements OnInit {
         } else {
           this.error = 'Failed to get courses!';
         }
+      });
+  }
+
+  deleteCourse(id: number){
+    this.http.delete(`http://localhost:8080/courses/${id}`)
+      .pipe(
+        catchError(error => {
+          this.error = 'Failed to delete course!';
+          return of(null);
+        })
+      )
+      .subscribe(response => {
+        this.courses = this.courses.filter(course => course.id !== id);
+        this.error = null;
       });
   }
 }
