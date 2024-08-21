@@ -24,7 +24,6 @@ export class AuthorComponent implements OnInit {
       .pipe(
         catchError(error => {
           this.error = 'Failed to get author!';
-          // console.log(error);
           return of(null);
         })
       )

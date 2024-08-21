@@ -1,26 +1,53 @@
 <main class="courses-main">
     <div class="courses-content">
-        <h2>Courses</h2>
+        <div class="title-pane">
+            <h2>Courses</h2>
+            <button (click)="toggleCreateForm()">{{ showForm ? 'Cancel' : 'Create' }}</button>
+        </div>
         @if(error){
             <div class="error-message">
                 Error: {{ error }}    
             </div>
         }
         @else {
-            <ul>
-                @for (course of courses; track course.id) {
-                    <li>
-                        <div class="data-panel">
-                            <h4>{{ course.title }}</h4>
-                            <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
-                            <p>Cost: {{ course.cost }}</p>
-                        </div>
-                        <div class="delete-panel">
-                            <button (click)="deleteCourse(course.id)">Delete Course</button>
-                        </div>
-                    </li>
-                }
-            </ul>
+            @if(showForm){
+                <form (ngSubmit)="createCourse()" class="course-form">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input id="title" [(ngModel)]="newCourse.title" name="title" required minlength="3">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="authorId">Author:</label>
+                        <select id="authorId" [(ngModel)]="newCourse.authorId" name="authorId" required>
+                            <option *ngFor="let id of authorIds" [value]="id">{{ id }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cost">Cost:</label>
+                        <input id="cost" type="number" [(ngModel)]="newCourse.cost" name="cost" required min="0">
+                    </div>
+
+                    <button type="submit">Create</button>
+                </form>
+            }
+            @else{
+                <ul>
+                    @for (course of courses; track course.id) {
+                        <li>
+                            <div class="data-panel">
+                                <h4>{{ course.title }}</h4>
+                                <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
+                                <p>Cost: {{ course.cost }}</p>
+                            </div>
+                            <div class="delete-panel">
+                                <button (click)="deleteCourse(course.id)">Delete</button>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
         }
     </div>
 </main>

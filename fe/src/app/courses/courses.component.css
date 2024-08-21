@@ -11,6 +11,10 @@
     flex-direction: column;
 }
 
+.title-panel {
+
+}
+
 .courses-content ul {
     list-style: none;
     padding: 0;
@@ -23,6 +27,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.course-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .data-panel {
