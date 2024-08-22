@@ -1,0 +1,28 @@
+<main class="author-main">
+    <div class="author-content">
+        <h2>Author</h2>
+        @if(error){
+            <div class="error-message">
+                Error: {{ error }}    
+            </div>
+        }
+        @else {
+            @if(author){
+                <div class="author-details">
+                    <p><strong>ID:</strong> {{ author.id }}</p>
+                    <p><strong>Name:</strong> {{ author.name }}</p>
+                    <p><strong>Age:</strong> {{ author.age }}</p>
+                </div>
+    
+                <h4>Courses</h4>
+                <ul>
+                    @for (course of author.courses; track course.id) {
+                        <li>
+                            {{ course.title }}
+                        </li>
+                    }
+                </ul>
+            }
+        }
+    </div>
+</main>
