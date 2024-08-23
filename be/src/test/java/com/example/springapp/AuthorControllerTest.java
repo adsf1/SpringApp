@@ -1,7 +1,6 @@
 package com.example.springapp;
 
 import com.example.springapp.author.Author;
-import com.example.springapp.author.AuthorDto;
 import com.example.springapp.author.AuthorRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,29 +25,21 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
 
     private static Author author;
 
-    private static AuthorDto authorDto;
-
-    private final String requestBody = """
-                {
-                    "name": "Test Author",
-                    "age": 1
-                }""";
-
     private final String updateRequestBody = """
                 {
-                    "name": "Test Course 2",
+                    "name": "Test Author 2",
                     "age": 2
                 }""";
 
     @BeforeAll
     public static void setUp() {
         author = new Author("Test Author", 27);
-        authorDto = new AuthorDto(author);
     }
 
     @AfterEach
     public void tearDown() {
         authorRepository.deleteAll();
+        assertEquals(0, authorRepository.count(), "Database should be empty after tearDown");
     }
 
     @Test
@@ -58,6 +49,7 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
         .when()
             .get("/authors")
         .then()
+                .log().all()
             .statusCode(200)
             .body(equalTo("[]"));
     }
@@ -65,6 +57,7 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
     @Test
     public void getAllAuthors_DatabaseWithOneRecord_ReturnsOneRecord(){
         Author savedAuthor = authorRepository.save(author);
+        int id = savedAuthor.getId();
 
         given()
             .port(port)
@@ -73,7 +66,7 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
         .then()
             .statusCode(200)
             .body("size()", equalTo(1))
-            .body("[0].id", equalTo(savedAuthor.getId()))
+            .body("[0].id", equalTo(id))
             .body("[0].name", equalTo(savedAuthor.getName()))
             .body("[0].age", equalTo(savedAuthor.getAge()))
             .body("[0].courses", hasSize(0));
@@ -81,7 +74,13 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
     }
 
     @Test
-    public void createAuthor_ValidInputAndCourseDoesNotExist_CreatesNewAuthor(){
+    public void createAuthor_ValidInput_CreatesNewAuthor(){
+        String requestBody = """
+                {
+                    "name": "Test Author",
+                    "age": 1
+                }""";
+
         given()
             .port(port)
             .contentType("application/json")
@@ -90,8 +89,9 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
             .post("/authors")
         .then()
         .statusCode(201)
+                .log().all()
             .body("size()", equalTo(4))
-            .body("id", equalTo(1))
+            .body("id", greaterThan(0))
             .body("name", equalTo("Test Author"))
             .body("age", equalTo(1))
             .body("courses", hasSize(0));
@@ -117,17 +117,19 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
     }
 
     @Test
-    public void getAuthorById_AuthorExists_ReturnsCourse(){
+    public void getAuthorById_AuthorExists_ReturnsAuthor(){
         Author savedAuthor = authorRepository.save(author);
+        int id = savedAuthor.getId();
 
         given()
             .port(port)
+            .pathParam("id", id)
         .when()
-            .get("/authors/1")
+            .get("/authors/{id}")
         .then()
             .statusCode(200)
             .body("size()", equalTo(4))
-            .body("id", equalTo((savedAuthor.getId())))
+            .body("id", equalTo(id))
             .body("name", equalTo(savedAuthor.getName()))
             .body("age", equalTo(savedAuthor.getAge()))
             .body("courses", hasSize(0));
@@ -148,18 +150,20 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
 
     @Test
     public void updateAuthorById_AuthorExists_UpdatesAuthor(){
-        authorRepository.save(author);
+        Author savedAuthor = authorRepository.save(author);
+        int id = savedAuthor.getId();
 
         given()
             .port(port)
             .contentType("application/json")
             .body(updateRequestBody)
+            .pathParam("id", id)
         .when()
-            .put("/courses/1")
+            .put("/authors/{id}")
         .then()
             .statusCode(200)
             .body("size()", equalTo(4))
-            .body("id", equalTo(1))
+            .body("id", greaterThan(0))
             .body("name", equalTo("Test Author 2"))
             .body("age", equalTo(2))
             .body("courses", hasSize(0));
@@ -180,20 +184,20 @@ public class AuthorControllerTest { // INCOMPLETE TESTS
 
     @Test
     public void deleteAuthorById_AuthorExists_DeletesAuthor(){
-        authorRepository.save(author);
+        Author savedAuthor = authorRepository.save(author);
+        int id = savedAuthor.getId();
 
         given()
             .port(port)
+            .pathParam("id", id)
         .when()
-            .delete("/authors/1")
+            .delete("/authors/{id}")
         .then()
             .statusCode(204);
     }
 
     @Test
     public void deleteAuthorById_AuthorDoesNotExist_ReturnsError(){
-        authorRepository.save(author);
-
         given()
             .port(port)
         .when()
