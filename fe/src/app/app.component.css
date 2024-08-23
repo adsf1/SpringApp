@@ -1,27 +1,14 @@
-/* TODO: Remove comments */
-
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
-
-.main {
-    height: 100%;
-    width: 100%;
-}
-
 nav {
     position: fixed;
     top: 0;
     width: 100%;
     background-color: #333;
     padding: 10px;
+    display: flex;
 }
 
-/* TODO: Could fix margins */
-button {
-    margin: 0 10px;
+nav button {
+    margin-right: 10px;
 }
 
 router-outlet {

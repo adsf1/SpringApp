@@ -5,22 +5,26 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { Course } from '../models/course.model';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Author } from '../models/author.model';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [NgFor, NgIf, RouterLink, FormsModule],
+  imports: [NgFor, NgIf, RouterLink, ReactiveFormsModule],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.css'
 })
 export class CoursesComponent implements OnInit {
   courses: Course[] = [];
   error: string | null = null;
-  newCourse: { title: string; authorId: number; cost: number } = { title: '', authorId: 1, cost: 0 };
   authorIds: number[] = [];
   showForm: boolean = false;
+  courseForm = new FormGroup({
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    authorId: new FormControl(1, Validators.required),
+    cost: new FormControl(0, [Validators.required, Validators.min(0)]),
+  });
 
   constructor(private http: HttpClient) {}
 
@@ -85,13 +89,13 @@ export class CoursesComponent implements OnInit {
 
   toggleCreateForm() {
     this.showForm = !this.showForm;
-    this.newCourse = { title: '', authorId: 1, cost: 0 };
+    this.courseForm.reset();
     this.error = null;
   }
 
-  // TODO: Could add validations to input
   createCourse() {
-    this.http.post<Course>('http://localhost:8080/courses', this.newCourse)
+    if (this.courseForm.valid) {      
+      this.http.post<Course>('http://localhost:8080/courses', this.courseForm.value)
       .pipe(
         catchError(error => {
           this.error = 'Failed to create course!';
@@ -102,10 +106,11 @@ export class CoursesComponent implements OnInit {
       .subscribe(course => {
         if (course) {
           this.courses.push(course);
-          this.newCourse = { title: '', authorId: 1, cost: 0 };
+          this.courseForm.reset();
           this.showForm = false;
           this.error = null;
         }
       });
+    }
   }
 }

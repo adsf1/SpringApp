@@ -20,11 +20,11 @@
 
 ### Run
 
-``mvn spring-boot:run``
+Run `mvn spring-boot:run` on a terminal window while on directory `SpringApp/be`.
 
 ### Test
 
-``curl localhost:8080``
+Run `curl localhost:8080` on a terminal window while on directory `SpringApp/be` to test if the BE is running.
 
 <hr>
 
