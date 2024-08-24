@@ -20,6 +20,8 @@ export class CoursesComponent implements OnInit {
   error: string | null = null;
   authorIds: number[] = [];
   showForm: boolean = false;
+  isEdit: boolean = false;
+  currentCourseId: number | null = null;
   courseForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
     authorId: new FormControl(1, Validators.required),
@@ -89,13 +91,50 @@ export class CoursesComponent implements OnInit {
 
   toggleCreateForm() {
     this.showForm = !this.showForm;
-    this.courseForm.reset();
+    this.isEdit = false;
+    this.courseForm.reset({ title: '', authorId: 1, cost: 0 });
     this.error = null;
+    this.currentCourseId = null;
   }
 
-  createCourse() {
-    if (this.courseForm.valid) {      
-      this.http.post<Course>('http://localhost:8080/courses', this.courseForm.value)
+  uploadCourse() {
+    if (this.courseForm.valid) {
+      if(this.isEdit){
+        this.editCourse();
+      } else {
+        this.createCourse();
+      }
+    }
+  }
+
+  editCourse(){
+    this.http.put<Course>(`http://localhost:8080/courses/${this.currentCourseId}`, this.courseForm.value)
+      .pipe(
+        catchError(error => {
+          this.error = 'Failed to create course!';
+          console.log(error);
+          return of(null);
+        })
+      )
+      .subscribe(course => {
+        if (course) {
+          const index = this.courses.findIndex(c => c.id === this.currentCourseId);
+
+          if (index !== -1) {
+            this.courses[index] = course;
+
+          this.courseForm.reset({ title: '', authorId: 1, cost: 0 });
+          this.showForm = false;
+          this.isEdit = false;
+          this.currentCourseId = null;
+          this.error = null;
+          }
+        }
+      });
+  }
+
+  createCourse(){    
+    this.http.post<Course>('http://localhost:8080/courses', this.courseForm.value)
       .pipe(
         catchError(error => {
           this.error = 'Failed to create course!';
@@ -106,11 +145,28 @@ export class CoursesComponent implements OnInit {
       .subscribe(course => {
         if (course) {
           this.courses.push(course);
-          this.courseForm.reset();
+          this.courseForm.reset({ title: '', authorId: 1, cost: 0 });
           this.showForm = false;
+          this.currentCourseId = null;
           this.error = null;
         }
       });
+  }
+
+  openEditForm(id: number){
+    const course = this.courses.find(c => c.id === id);
+    this.currentCourseId = id;
+
+    if (course) {
+      this.courseForm.patchValue({
+        title: course.title,
+        authorId: course.authorId,
+        cost: course.cost
+      });
     }
+
+    this.showForm = true;
+    this.isEdit = true;
+    this.error = null;
   }
 }

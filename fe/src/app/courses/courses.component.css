@@ -55,8 +55,9 @@
     
 }
 
-.delete-panel {
-
+.actions-panel {
+    display: flex;
+    gap: 10px;
 }
 
 .error {

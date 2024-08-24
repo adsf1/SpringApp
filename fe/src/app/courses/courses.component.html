@@ -11,7 +11,7 @@
         }
         @else {
             @if(showForm){
-                <form (ngSubmit)="createCourse()" class="course-form" [formGroup]="courseForm">
+                <form (ngSubmit)="uploadCourse()" class="course-form" [formGroup]="courseForm">
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input id="title" formControlName="title">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" [disabled]="!courseForm.valid">Create</button>
+                    <button type="submit" [disabled]="!courseForm.valid">{{ isEdit ? 'Save' : 'Create' }}</button>
                 </form>
             }
             @else{
@@ -52,8 +52,9 @@
                                 <p>Author: <a [routerLink]="['/author', course.authorId]">{{ course.authorId }}</a></p>
                                 <p>Cost: {{ course.cost }}</p>
                             </div>
-                            <div class="delete-panel">
+                            <div class="actions-panel">
                                 <button (click)="deleteCourse(course.id)">Delete</button>
+                                <button (click)="openEditForm(course.id)">Edit</button>
                             </div>
                         </li>
                     }
